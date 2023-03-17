@@ -158,4 +158,8 @@ contract BlindAuction {
             }
         }
     }
+
+    receive() external payable {}
+
+    fallback() external payable {}
 }
