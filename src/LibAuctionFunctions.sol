@@ -93,20 +93,23 @@ contract LibAuctionFunctions {
     function _withdraw(uint256 _voteId) internal {
         require(ds.ended[_voteId], "AUCTION NOT ENDED YET");
         uint amount = ds.pendingReturns[_voteId][msg.sender];
-        require(amount > 0);
         if (amount > 0) {
             ds.pendingReturns[_voteId][msg.sender] = 0;
-            payable(msg.sender).transfer(amount);
+            (bool success, ) = payable(msg.sender).call{value: amount}("");
             emit Withdrawal(msg.sender, amount);
-        }
+        } else revert();
     }
 
     function _auctionEnd(uint256 _voteId) internal {
+        // ds.ended[_voteId] = true;
+
         require((ds.ended[_voteId] == false), "AUCTION ENDED ALREADY");
         ds.ended[_voteId] = true;
         uint tempAmmount = ds.highestBid[_voteId];
         ds.highestBid[_voteId] = 0;
-        ds.beneficiary[_voteId].transfer(tempAmmount);
+        (bool success, ) = (ds.beneficiary[_voteId]).call{value: tempAmmount}(
+            ""
+        );
         if (ds.highestBidder[_voteId] != address(0)) {
             IERC721(ds.auctionNFT[_voteId].nftAddress).transferFrom(
                 address(this),
