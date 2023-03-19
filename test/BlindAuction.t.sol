@@ -55,14 +55,38 @@ contract BlindAuctionTest is Test {
             nftId,
             1
         );
-        placeBid(0x13B109506Ab1b120C82D0d342c5E64401a5B6381, 2, _voteId);
-        placeBid(0xA771E1625DD4FAa2Ff0a41FA119Eb9644c9A46C8, 3, _voteId);
-        placeBid(0xfd182E53C17BD167ABa87592C5ef6414D25bb9B4, 4, _voteId);
+        placeBid(
+            0x13B109506Ab1b120C82D0d342c5E64401a5B6381,
+            (2 * 1e18),
+            _voteId
+        );
+        placeBid(
+            0xA771E1625DD4FAa2Ff0a41FA119Eb9644c9A46C8,
+            (3 * 1e18),
+            _voteId
+        );
+        placeBid(
+            0xfd182E53C17BD167ABa87592C5ef6414D25bb9B4,
+            (4 * 1e18),
+            _voteId
+        );
         vm.warp(block.timestamp + (_bidTime * 1.2 minutes));
 
-        revealBid(0x13B109506Ab1b120C82D0d342c5E64401a5B6381, _voteId, 2);
-        revealBid(0xA771E1625DD4FAa2Ff0a41FA119Eb9644c9A46C8, _voteId, 3);
-        revealBid(0xfd182E53C17BD167ABa87592C5ef6414D25bb9B4, _voteId, 4);
+        revealBid(
+            0x13B109506Ab1b120C82D0d342c5E64401a5B6381,
+            _voteId,
+            (2 * 1e18)
+        );
+        revealBid(
+            0xA771E1625DD4FAa2Ff0a41FA119Eb9644c9A46C8,
+            _voteId,
+            (3 * 1e18)
+        );
+        revealBid(
+            0xfd182E53C17BD167ABa87592C5ef6414D25bb9B4,
+            _voteId,
+            (4 * 1e18)
+        );
         vm.warp(block.timestamp + (_revealTime * 1 minutes));
 
         blindAuction.auctionEnd(_voteId);
